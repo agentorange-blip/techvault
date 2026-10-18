@@ -1,0 +1,25 @@
+const data=[
+["Televisions","TV has no power","Start with outlet, cord, standby indicator and model-specific power checks.","General triage; verify the exact model.","tv television no power dead won't turn on standby"],
+["Televisions","Sound but no picture","Separate input/source issues from display, backlight and panel symptoms.","Do not assume a failed panel.","tv television sound picture black screen backlight"],
+["Televisions","Lines or spots on screen","Record whether artifacts appear in menus, all inputs or one source.","Panel faults require careful confirmation.","tv television lines spots white dots picture"],
+["Refrigerators & Freezers","Not cooling properly","Check settings, airflow obstructions, door sealing and temperature history first.","Refrigeration work may require qualified service.","refrigerator freezer not cooling warm temperature"],
+["Refrigerators & Freezers","Water leak","Identify leak location and inspect accessible supply connections and drain paths.","Disconnect power before appropriate inspection.","refrigerator leak water puddle hose"],
+["Refrigerators & Freezers","Ice maker not producing ice","Confirm model, water supply status, temperature and documented cycle conditions.","Use model-specific service information.","refrigerator ice maker no ice"],
+["Washers","Washer will not drain","Check cycle pause, accessible hose kinks and documented filter access.","Unplug before service; prepare for residual water.","washer washing machine not draining drain water"],
+["Washers","Washer will not spin","Review load balance, cycle selection, door/lid status and model-specific codes.","Do not bypass safety interlocks.","washer washing machine not spin spinning"],
+["Washers","Washer not filling","Check supply valves, hose condition and displayed codes before internal testing.","Water and electrical hazards may coexist.","washer washing machine no fill water"],
+["Dryers","Dryer has no heat","Confirm settings and airflow; electric and gas dryers require different procedures.","Gas and high-voltage checks require qualified handling.","dryer no heat not heating cold"],
+["Dryers","Dryer takes too long","Start with lint filter, load, vent restrictions and documented airflow guidance.","Restricted exhaust can create a fire hazard.","dryer long drying time slow airflow lint"],
+["Dishwashers","Dishwasher will not drain","Check cycle status and accessible filter/drain path using the exact manual.","Avoid opening electrical compartments while powered.","dishwasher not draining standing water"],
+["Dishwashers","Dishwasher leaking","Note where and when water appears; inspect accessible door seal and connections.","Stop use if water reaches electrical components.","dishwasher leak leaking water"],
+["Ranges & Ovens","Oven not heating","Verify mode, temperature setting, displayed errors and appliance type.","Gas and mains-voltage work require qualified service.","oven range not heating bake"],
+["Ranges & Ovens","Cooktop ignition issue","Record burner behavior and clicking; identify gas or electric type.","If gas odor is present, stop and follow emergency guidance.","range cooktop ignition burner gas"],
+["Microwaves","Microwave runs but does not heat","Record model and symptoms; do not open the high-voltage compartment.","High-voltage components can remain dangerous when unplugged.","microwave no heat not heating"],
+["Other Appliances","Air conditioner not cooling","Check mode, filter condition, airflow and displayed codes before service.","Refrigerant circuit work requires qualified handling.","air conditioner ac not cooling warm"],
+["Other Appliances","Appliance error code","Capture complete code and model number, then consult the manufacturer's source.","Codes can differ across models and revisions.","error code fault code appliance"]
+];
+const cats=["All",...new Set(data.map(x=>x[0]))];let active="All";
+const filters=document.querySelector("#filters"),results=document.querySelector("#results"),search=document.querySelector("#search");
+function drawFilters(){filters.innerHTML="";cats.forEach(c=>{const b=document.createElement("button");b.className="filter"+(active===c?" active":"");b.textContent=c;b.onclick=()=>{active=c;drawFilters();drawResults()};filters.append(b)})}
+function drawResults(){const q=search.value.trim().toLowerCase();const rows=data.filter(x=>(active==="All"||x[0]===active)&&x.join(" ").toLowerCase().includes(q));results.innerHTML="";rows.forEach(x=>{const a=document.createElement("article"),k=document.createElement("div"),h=document.createElement("h3"),p=document.createElement("p"),n=document.createElement("p");k.className="kind";k.textContent=x[0];h.textContent=x[1];p.textContent=x[2];n.className="note";n.textContent="ⓘ "+x[3];a.append(k,h,p,n);results.append(a)});document.querySelector("#count").textContent=`Showing ${rows.length} of ${data.length} starter topics`;document.querySelector("#empty").hidden=rows.length>0}
+search.addEventListener("input",drawResults);drawFilters();drawResults();
